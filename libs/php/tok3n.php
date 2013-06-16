@@ -22,24 +22,24 @@ class Tok3nApiV1{
 		/*
 			API V1 Methods
 		*/
-		function getActiveSession(){
-			$url = $this->tok3nURL."/api/v1/getSession?secretKey=".$this->tok3nSecretKey;
+		function getActiveSession($kind){
+			$url = $this->tok3nURL."/api/v1/getSession?kind=$kind&secretKey=".$this->tok3nSecretKey;
 			return $this->getRemote($url);
 		}
 		
 		function getAccesUrl($callback,$callbackdata){
-			$session = $this->getActiveSession();
+			$session = $this->getActiveSession("access");
 			return $this->tok3nURL."/login.do?publicKey=".$this->tok3nPublicKey."&session=$session&callbackurl=$callback&callbackdata=$callbackdata";
 		}
 		
-		function getJsClientUrl($action="Tok3n"){
-			 $url = $this->tok3nURL."/api/v1/client.js?publicKey=".$this->tok3nPublicKey."&actionName=$action";
+		function getJsClientUrl($action="Tok3n",$userkey){
+			 $url = $this->tok3nURL."/api/v1/client.js?publicKey=".$this->tok3nPublicKey."&actionName=$action&userkey=$userkey";
 			 return $url;
 		}
 		
-		function validateOTP($userKey, $otp){
-			$url = $this->tok3nURL."/api/v1/otpValid?SecretKey=".$this->tok3nSecretKey."&UserKey=$userKey&otp=$otp";
-			
+		function validateOTP($userKey, $otp, $secion){
+			$url = $this->tok3nURL."/api/v1/otpValid?SecretKey=".$this->tok3nSecretKey."&UserKey=$userKey&otp=$otp&secion=$secion";
+						
 			$output = $this->getRemote($url);
 						
 			$data = json_decode($output);	
